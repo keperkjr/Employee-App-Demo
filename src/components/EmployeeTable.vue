@@ -12,12 +12,14 @@
       <tbody>
         <tr v-for="employee in employees" :key="employee.id">
           <td v-if="editing === employee.id">
-            <input type="text" v-model="employee.name" />
+            <input ref="name" type="text" :value="employee.name" />
+            <!-- <input type="text" v-model="employee.name" /> -->
           </td>
           <td v-else>{{employee.name}}</td>
 
           <td v-if="editing === employee.id">
-            <input type="text" v-model="employee.email" />
+            <input ref="email" type="text" :value="employee.email" />
+            <!-- <input type="text" v-model="employee.email" /> -->
           </td>
           <td v-else>{{employee.email}}</td>
 
@@ -48,16 +50,21 @@
         },        
         methods: {
           editMode(employee) {
-            this.cachedEmployee = Object.assign({}, employee)
+            // this.cachedEmployee = Object.assign({}, employee)
             this.editing = employee.id
           },
           editEmployee(employee) {
-            if (employee.name === '' || employee.email === '') return
+            let name = this.$refs.name.value;
+            let email = this.$refs.email.value;
+            if (name === '' || email === '') return;
+            employee.name = name;
+            employee.email = email;
             this.$emit('edit-employee', employee.id, employee)
             this.editing = null
           },
           cancelEdit(employee) {
-            Object.assign(employee, this.cachedEmployee)
+            // Object.assign(employee, this.cachedEmployee)
+            +employee;            
             this.editing = null;
           },          
         }
